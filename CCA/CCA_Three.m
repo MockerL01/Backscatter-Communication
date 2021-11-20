@@ -22,7 +22,7 @@ c_flag = 1;
 % save data_input.txt -ascii rand_ints_gen
 rand_ints = load("data_input_256.txt");
 data_ofdm = ofdm_module(rand_ints, mod_method, n_fft, n_cp, c_flag);
-num_sim = 1000;
+num_sim = 10000;
 channelStrength_Size = 10;
 ChannelStrength = 1;
 channelStrengthStride = 1;

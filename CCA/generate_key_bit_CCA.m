@@ -5,8 +5,8 @@ snr = 50;
 alpha = 0.3 + 1i*0.4;
 pw_noise = pt/10^(snr/10);
 
-d = [8, 7, 3];
-taps = [8, 7, 3];
+d = [16, 14, 6];
+taps = [16, 14, 6];
 n_L = max(taps(1),taps(2))+taps(3)-1;  %×î³¤Ê±ÑÓ
 
 h1 = ray_model(d(1),taps(1));
