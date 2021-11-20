@@ -13,7 +13,7 @@ n_ofdm = n_fft + n_cp;
 n_frame = 1;   
 K = 1;
 c_flag = 1;
-num_size = 1000;
+num_size = 10000;
 
 maxSignalStrength = 10;
 

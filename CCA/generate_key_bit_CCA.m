@@ -1,7 +1,7 @@
 function  [v_y1_cp, v_y2_cp, v_seq1, v_seq2,H1,H2,H_12] = generate_key_bit_CCA(data_ofdm, n_ofdm, n_cp ,n_frame,channelStrength,H1_flag,H2_flag,H12_flag)
 
 pt = 10^(-2);
-snr = 15;
+snr = 50;
 alpha = 0.3 + 1i*0.4;
 pw_noise = pt/10^(snr/10);
 

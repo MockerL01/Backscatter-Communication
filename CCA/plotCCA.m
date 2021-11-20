@@ -18,7 +18,7 @@ hold on;
 plot(step,MI_Channel_masterOneChannel_data,'--v','LineWidth',1.5);
 hold off;
 grid on;
-axis([1 10 0 5])
+axis([1 10 0 8])
 %legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
 legend('收发设计生成密钥的互信息','直接相减产生的密钥互信息','收发设计生成密钥的信息泄露比率','直接相减产生的密钥的信息泄露比率','Fontname','<宋体>');
 xlabel('控制信道强度','Fontname','<宋体>');
@@ -41,7 +41,7 @@ hold on;
 plot(step,MI_Design_masterTwoChannel_data,'g--d','LineWidth',1.5);
 hold off;
 grid on;
-axis([1 10 0 7])
+axis([1 10 0 10])
 %legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
 legend('收发设计生成密钥的互信息','直接相减产生的密钥互信息','收发设计生成密钥的信息泄露比率','直接相减产生的密钥的信息泄露比率','Fontname','<宋体>');
 xlabel('控制信道强度','Fontname','<宋体>');

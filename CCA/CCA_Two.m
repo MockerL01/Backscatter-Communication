@@ -20,8 +20,8 @@ c_flag = 1;
 % save data_input.txt -ascii rand_ints_gen
 rand_ints = load("data_input_256.txt");
 data_ofdm = ofdm_module(rand_ints, mod_method, n_fft, n_cp, c_flag);
-num_sim = 1000;
-channelStrength_Size =30;
+num_sim = 10000;
+channelStrength_Size =10;
 ChannelStrength = 1;
 channelStrengthStride = 1;
 
@@ -204,7 +204,7 @@ ylabel('互信息','Fontname','<宋体>');
 
 
 % 
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_Two.txt', 'MI_Channel_Two','-ascii');
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_Two.txt', 'MI_Design_Two', '-ascii');
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_masterTwoChannel.txt', 'MI_Channel_masterTwoChannel','-ascii');
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_masterTwoChannel.txt', 'MI_Design_masterTwoChannel', '-ascii');
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_Two.txt', 'MI_Channel_Two','-ascii');
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_Two.txt', 'MI_Design_Two', '-ascii');
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_masterTwoChannel.txt', 'MI_Channel_masterTwoChannel','-ascii');
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_masterTwoChannel.txt', 'MI_Design_masterTwoChannel', '-ascii');

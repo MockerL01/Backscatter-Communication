@@ -22,8 +22,8 @@ rand_ints = load("data_input_256.txt");
 data_ofdm = ofdm_module(rand_ints, mod_method, n_fft, n_cp, 1);
 data_cp_pwr = mean(abs(data_ofdm).^2);%平均功率
 
-num_sim = 1000;
-channelStrength_Size = 50;
+num_sim = 10000;
+channelStrength_Size = 10;
 ChannelStrength = 1;
 channelStrengthStride = 1;
 
@@ -210,9 +210,9 @@ legend('Design Key','Channel Key','Design Leak','Channel Leak','Fontname','<宋体
 xlabel('控制信道强度','Fontname','<宋体>');
 ylabel('互信息','Fontname','<宋体>');
 % 
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_One.txt', 'MI_Channel_One','-ascii');
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_One.txt', 'MI_Design_One', '-ascii');
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_masterOneChannel.txt', 'MI_Channel_masterOneChannel','-ascii');
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_masterOneChannel.txt', 'MI_Design_masterOneChannel', '-ascii');
-% % 
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_One.txt', 'MI_Channel_One','-ascii');
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_One.txt', 'MI_Design_One', '-ascii');
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_masterOneChannel.txt', 'MI_Channel_masterOneChannel','-ascii');
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_masterOneChannel.txt', 'MI_Design_masterOneChannel', '-ascii');
+% 
 

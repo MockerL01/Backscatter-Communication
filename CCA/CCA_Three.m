@@ -22,7 +22,7 @@ c_flag = 1;
 % save data_input.txt -ascii rand_ints_gen
 rand_ints = load("data_input_256.txt");
 data_ofdm = ofdm_module(rand_ints, mod_method, n_fft, n_cp, c_flag);
-num_sim = 10000;
+num_sim = 1000;
 channelStrength_Size = 10;
 ChannelStrength = 1;
 channelStrengthStride = 1;
@@ -62,12 +62,12 @@ for j = 1:channelStrength_Size
     MI_Channel_KEY2_H_all(j) = mi(v_seq2_Three(:,j),H1(:,j).*H2(:,j).*H_12(:,j));
     leakInformation_Channel(j) = max(MI_Channel_KEY1_H_all(j),MI_Channel_KEY2_H_all(j));
     
-    clear MI_Channel_KEY1_H_all;clear MI_Channel_KEY2_H_all;
+%     clear MI_Channel_KEY1_H_all;clear MI_Channel_KEY2_H_all;
     MI_Design(j) = mi(v1_Three(:,j),v2_Three(:,j));
     MI_Design_KEY1_H_all(j) = mi(v1_Three(:,j),H1(:,j).*H2(:,j).*H_12(:,j));
     MI_Design_KEY2_H_all(j) = mi(v2_Three(:,j),H1(:,j).*H2(:,j).*H_12(:,j));
     leakInformation_Design(j) = max(MI_Design_KEY1_H_all(j),MI_Design_KEY2_H_all(j));
-     clear MI_Design_KEY1_H_all;clear MI_Design_KEY2_H_all;
+%      clear MI_Design_KEY1_H_all;clear MI_Design_KEY2_H_all;
 end
 
 step = 1:channelStrength_Size;
@@ -88,7 +88,7 @@ xlabel('控制信道强度','Fontname','<宋体>');
 ylabel('互信息','Fontname','<宋体>');
 
 
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_Three.txt', 'MI_Channel','-ascii');
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_Three.txt', 'MI_Design', '-ascii');
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_masterThreeChannel.txt', 'leakInformation_Channel','-ascii');
-% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_masterThreeChannel.txt', 'leakInformation_Design', '-ascii');
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_Three.txt', 'MI_Channel','-ascii');
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_Three.txt', 'MI_Design', '-ascii');
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_masterThreeChannel.txt', 'leakInformation_Channel','-ascii');
+save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_masterThreeChannel.txt', 'leakInformation_Design', '-ascii');
