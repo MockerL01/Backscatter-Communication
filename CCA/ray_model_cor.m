@@ -14,4 +14,4 @@ h_cg = 5*d^(-lamda/2);
 pow_h = exp(-(0:length(h_b)-1));
 pow_h = h_cg*pow_h/norm(pow_h); %norm(pow_h)返回向量的模或欧几里得长度
 
-h = cor*h_b + sqrt(1-cor^2).*sqrt(pow_h).* (randn(1,length(h_b)) + 1i*randn(1,length(h_b)));
+h = cor*h_b + sqrt(1-cor^2).*sqrt(pow_h').* (randn(length(h_b),1) + 1i*randn(length(h_b),1));

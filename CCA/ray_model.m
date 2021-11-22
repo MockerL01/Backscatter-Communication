@@ -14,3 +14,5 @@ pow_h = exp(-(0:taps-1));
 pow_h = h_cg*pow_h/norm(pow_h);
 
 h = (randn(1,1) + 1i*randn(1,1)) * sqrt(pow_h);
+
+h = h';

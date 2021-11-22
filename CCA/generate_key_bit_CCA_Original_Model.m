@@ -15,7 +15,7 @@ h = ray_model(d(3),taps(3));
 
 h_t = ray_model_cor(h,cor,d(3));
 
-H = randi(channelStrength,1,d(3));
+H = randi(channelStrength,d(3),1);
 
 
 % all transmissions in ambient backscatter communication
@@ -27,4 +27,6 @@ y1_d_t = ofdm_trans(data_ofdm, h_t+H, pw_noise);
 
 v_y1_cp = mean(abs(y1_cp));
 v_y2_cp = mean(abs(y2_cp));
+
+
 H = mean(abs(H));

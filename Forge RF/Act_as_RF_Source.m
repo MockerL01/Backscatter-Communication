@@ -39,6 +39,18 @@ for signalStrength = 1:maxSignalStrength
     end
 end
 
+
+mean_v1 = repmat(mean(v1),length(v1),1);
+v1 = double(v1>=mean_v1);
+mean_v2 = repmat(mean(v2),length(v2),1);
+v2 = double(v2>=mean_v2);
+
+mean_seq1 = repmat(mean(seq1),length(seq1),1);
+seq1 = double(seq1>=mean_seq1);
+mean_seq2 = repmat(mean(seq2),length(seq2),1);
+seq2 = double(seq2>=mean_seq2);
+
+
 for j = 1:maxSignalStrength
     MI_Channel_Key(j) = mi(seq1(:,j),seq2(:,j));
     MI_Design_Key(j) = mi(v1(:,j),v2(:,j));

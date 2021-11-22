@@ -55,17 +55,32 @@ for j = 1:channelStrength_Size
      ChannelStrength = ChannelStrength + channelStrengthStride ;
 end
 
+mean_v1_Three = repmat(mean(v1_Three),length(v1_Three),1);
+v1_Three = double(v1_Three>=mean_v1_Three);
+mean_v2_Three = repmat(mean(v2_Three),length(v2_Three),1);
+v2_Three = double(v2_Three>=mean_v2_Three);
+
+mean_v_seq1_Three = repmat(mean(v_seq1_Three),length(v_seq1_Three),1);
+v_seq1_Three = double(v_seq1_Three>=mean_v_seq1_Three);
+mean_v_seq2_Three = repmat(mean(v_seq2_Three),length(v_seq2_Three),1);
+v_seq2_Three = double(v_seq2_Three>=mean_v_seq2_Three);
+% 
+H=H1.*H2.*H_12;
+% mean_H_all = repmat(mean(H),length(H),1);
+% H_all = double(H>=mean_H_all);
+
+
 %%%%%%%%%%%%%%%生成泄露信息的互信息(同时掌握三条信道)%%%%%%%%%%%%%%%%
 for j = 1:channelStrength_Size
     MI_Channel(j) = mi(v_seq1_Three(:,j),v_seq2_Three(:,j));
-    MI_Channel_KEY1_H_all(j) = mi(v_seq1_Three(:,j),H1(:,j).*H2(:,j).*H_12(:,j));
-    MI_Channel_KEY2_H_all(j) = mi(v_seq2_Three(:,j),H1(:,j).*H2(:,j).*H_12(:,j));
+    MI_Channel_KEY1_H_all(j) = mi(v_seq1_Three(:,j),H(:,j));
+    MI_Channel_KEY2_H_all(j) = mi(v_seq2_Three(:,j),H(:,j));
     leakInformation_Channel(j) = max(MI_Channel_KEY1_H_all(j),MI_Channel_KEY2_H_all(j));
     
 %     clear MI_Channel_KEY1_H_all;clear MI_Channel_KEY2_H_all;
     MI_Design(j) = mi(v1_Three(:,j),v2_Three(:,j));
-    MI_Design_KEY1_H_all(j) = mi(v1_Three(:,j),H1(:,j).*H2(:,j).*H_12(:,j));
-    MI_Design_KEY2_H_all(j) = mi(v2_Three(:,j),H1(:,j).*H2(:,j).*H_12(:,j));
+    MI_Design_KEY1_H_all(j) = mi(v1_Three(:,j),H(:,j));
+    MI_Design_KEY2_H_all(j) = mi(v2_Three(:,j),H(:,j));
     leakInformation_Design(j) = max(MI_Design_KEY1_H_all(j),MI_Design_KEY2_H_all(j));
 %      clear MI_Design_KEY1_H_all;clear MI_Design_KEY2_H_all;
 end
@@ -81,7 +96,7 @@ hold on;
 plot(step,leakInformation_Channel,'--v','LineWidth',1.5);
 hold off;
 grid on;
-axis([1 channelStrength_Size 0 12])
+axis([1 channelStrength_Size 0 1])
 %legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
 legend('收发设计生成密钥的互信息','直接相减产生的密钥互信息','收发设计生成密钥的信息泄露比率','直接相减产生的密钥的信息泄露比率','Fontname','<宋体>');
 xlabel('控制信道强度','Fontname','<宋体>');

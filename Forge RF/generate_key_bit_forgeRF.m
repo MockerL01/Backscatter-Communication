@@ -1,7 +1,7 @@
-function  [v_y1_cp, v_y2_cp, v_seq1, v_seq2,h1,h2] = generate_key_bit_forgeRF(data_ofdm, n_ofdm, n_cp ,n_frame)
+function  [v_y1_cp, v_y2_cp, v_key1, v_key2,h1,h2] = generate_key_bit_forgeRF(data_ofdm, n_ofdm, n_cp ,n_frame)
 
 pt = 10^(-2);
-snr = 50;
+snr = 15;
 alpha = 0.3 + 1i*0.4;
 pw_noise = pt/10^(snr/10);
 
@@ -34,14 +34,19 @@ v_y1_cp = mean(abs(y1_cp));
 v_y2_cp = mean(abs(y2_cp));
 
 %%ÐÅµÀ·ÖÎö
-[y1,y1_d] = combineSignal(y1_d,y1_b,n_ofdm);
-[y2,y2_d] = combineSignal(y2_d,y2_b,n_ofdm);
+% all transmissions in ambient backscatter communication
+y1_d_channel = ofdm_trans(data_ofdm,h1,pw_noise);
+y2_d_channel= ofdm_trans(data_ofdm,h2,pw_noise);
 
-seq1 = y1_d.*(y1-y1_d);
-seq2 = y2_d.*(y2-y2_d);
+y1_b_channel = ofdm_trans(y2_d_channel,h_12,pw_noise);
+y2_b_channel = ofdm_trans(y1_d_channel,h_12,pw_noise);
 
-v_seq1 = mean(abs(seq1));
-v_seq2 = mean(abs(seq2));
+key1 = conv(invert_conv(data_ofdm,y1_d_channel),invert_conv(data_ofdm,y1_b_channel));
+key2 = conv(invert_conv(data_ofdm,y2_d_channel),invert_conv(data_ofdm,y2_b_channel));
+
+v_key1 = mean(abs(key1));
+v_key2 = mean(abs(key2));
+
 
 
 

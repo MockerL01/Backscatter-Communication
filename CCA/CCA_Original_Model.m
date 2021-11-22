@@ -1,3 +1,6 @@
+clear
+clc
+
 addpath('E:\研究生\背反射项目\physical-key-generation-master\MIToolbox-master\matlab');
 
 % modulation methods: BPSK, QPSK,16QAM, 32QAM,64QAM
@@ -36,6 +39,13 @@ for j = 1:channelStrength_Size
     end
     channelStrength = channelStrength + channelStrengthStride ;
 end
+
+
+
+mean_v1 = repmat(mean(v1),length(v1),1);
+v1 = double(v1>=mean_v1);
+mean_v2 = repmat(mean(v2),length(v2),1);
+v2 = double(v2>=mean_v2);
 
 for j = 1:channelStrength_Size
     MI_Original_Model(j) = mi(v1(:,j),v2(:,j));
