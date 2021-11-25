@@ -1,0 +1,11 @@
+function channel_data = ofdm_trans2(ofdm_data, h, noise)
+% inputs:
+%       ofdm_data: modulated data for transmitting
+%       h: the Rayleigh channel that data will go through
+%       noise_pw: the noise power recieved at receiver
+% output: 
+%       channel data: the received data at receiver, including data signal and
+%       noise signal
+
+channel_data = conv(ofdm_data,h);%多项式相乘
+channel_data = channel_data+noise;
