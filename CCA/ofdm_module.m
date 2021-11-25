@@ -6,7 +6,7 @@ function ofdm_data = ofdm_module(data,mod_method, n_fft, n_cp, cp_flag)
 %       n_fft: IFFT/FFT size
 %       n_cp: size of cyclic prefix extension
 %       n_frame: the acount of the OFDM frame
-%       cp_flag: 1--cp, 0--guard      
+%       cp_flag: 1--cp, 0--guard
 %output:
 %       ofdm_data: modulated OFDM data
 
@@ -20,7 +20,7 @@ mod_methods = {'BPSK', 'QPSK','8PSK','16QAM', '32QAM','64QAM'};
 mod_order = find(ismember(mod_methods, mod_method));
 
 % input data to binary stream
-rand_bits = dec2bin(data(:)); %将十进制转换为二进制进行表示 二进制字符
+rand_bits = dec2bin(data(:));
 
 % binary stream to symbols 
 % Parse binary stream into mod_order bit symbols
@@ -78,9 +78,6 @@ fft_rem = mod(n_fft-mod(length(X),n_fft),n_fft);
 X_padded = [X;zeros(fft_rem,1)];
 X_blocks = reshape(X_padded, n_fft,length(X_padded)/n_fft);
 x = ifft(X_blocks);
-
-% x = ones(size(X_blocks));
-
 %data_x_pwr = mean(abs(x).^2)
 % add cyclic prefix extension and shift from parallel to serial
 guard_zp = zeros(n_cp,1);
@@ -88,7 +85,7 @@ guard_op = ones(n_cp,1)*(1+1i)/sqrt(2);
 guard_pre = [0;(1+1i)/sqrt(2)];
 guard_pre = repmat(guard_pre,n_cp/2,1);
 
-if cp_flag == 1%在x前CP添加循环
+if cp_flag == 1
     x_cp = [x(end-n_cp+1:end,:);x];
 elseif cp_flag == 2
     x_cp = [guard_zp;x(1:n_fft-n_cp,:);guard_zp];
@@ -98,9 +95,6 @@ elseif cp_flag == 4
     x_cp = [guard_pre;x(1:n_fft-n_cp,:);guard_pre];
 end
 
-% cp_flag
-% x_cp
 ofdm_data = x_cp(:);
+
 ofdm_data = ofdm_data/sqrt(mean(abs(ofdm_data).^2));
-
-

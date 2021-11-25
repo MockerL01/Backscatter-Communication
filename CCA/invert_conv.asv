@@ -1,4 +1,0 @@
-function y = invert_conv(x,z)
-
-xpad = [x;zeros(length(z)-length(x),1)];
-

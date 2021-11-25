@@ -1,24 +1,30 @@
-clear
-clc
-h1 = [1,2,3,4,5;5,6,7,8,9]';
-h12 = [2,3,4]';
-h2 = [4,5,7,8]';
-
-s = [1,0,1,1,0,1,0,0,1]';
-
-mean_h1 = repmat(mean(h1),length(h1),1);
-
-v_h1 = double(h1>=mean_h1);
-
-% r1 = conv(h1,conv(h2,h12));
-% % r2 = conv(h2,conv(h1,h12));
+% % h1 = [0.1,0.2,0.3];
+% clear
+% clc
+addpath('E:\研究生\背反射项目\physical-key-generation-master\MIToolbox-master\matlab');
+% s = [1 2 3 4 5 6 7 8 9 10]';
+% H1 = [1,2,3]';
+% H2 = [1,2,3]';
+% H12 = [2,4,6]';
+% n_L = 5;
+% n_cp = 8;
 % 
-% y2_d = conv(s,h2);
-% y1_d = conv(s,h1);
+% noise = 0.1;
+% channel_data1 = conv(H1,s) + noise;
+% % invert_conv(s,channel_data1)
+% channel_data2 = conv(H2,s) + noise;
+% % modulate = [ones(1,10),ones(1,10)-2];
+% % data = s.*modulate;
+% channel_data12 = conv(channel_data1.*0.5,H1);
+% channel_data21 = conv(channel_data2.*0.5,H12)+noise;
+% res = conv(H1,H12);
+% h1h12 = invert_conv(s,channel_data12);
 % 
-% y2_b = conv(y1_d,h12);
-% y1_b = conv(y2_d,h12);
-% 
-% % conv(h2,h12)
-% key1 = conv(invert_conv(s,y1_d),invert_conv(s,y1_b));
-% key2 = conv(invert_conv(s,y2_d),invert_conv(s,y2_b));
+% difS = sum(channel_data12 - s);
+
+key1 = randi(2,100,1)-1;
+key2 = key1;
+h(key1)
+h(key2)
+h([key1,key2])
+mi(key1,key2)

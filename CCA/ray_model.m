@@ -2,7 +2,7 @@ function h = ray_model(d,taps)
 % generate the exponential rayleigh model
 % inputs:
 %       d: the distance between two objects
-%       taps: the delay taps£¨Æ½¾ùÊ±ÑÓ£©
+%       taps: the delay taps
 % output:
 %       h: the exponential Rayleigh model
 

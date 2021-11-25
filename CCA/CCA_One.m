@@ -25,9 +25,9 @@ data_ofdm = ofdm_module(rand_ints, mod_method, n_fft, n_cp, 1);
 data_cp_pwr = mean(abs(data_ofdm).^2);%平均功率
 
 num_sim = 10000;
-channelStrength_Size = 10;
-ChannelStrength = 1;
-channelStrengthStride = 1;
+channelStrength_Size = 11;
+ChannelStrength = 0;
+channelStrengthStride = 0.1;
 
 
 
@@ -55,35 +55,43 @@ for j = 1:channelStrength_Size
 end
 
 
-mean_v1_One_H1 = repmat(mean(v1_One_H1),length(v1_One_H1),1);
+mean_v1_One_H1 = repmat(mean(v1_One_H1),num_sim,1);
 v1_One_H1 = double(v1_One_H1>=mean_v1_One_H1);
-mean_v2_One_H1 = repmat(mean(v2_One_H1),length(v2_One_H1),1);
+mean_v2_One_H1 = repmat(mean(v2_One_H1),num_sim,1);
 v2_One_H1 = double(v2_One_H1>=mean_v2_One_H1);
 
-mean_v_seq1_One_H1 = repmat(mean(v_seq1_One_H1),length(v_seq1_One_H1),1);
+mean_v_seq1_One_H1 = repmat(mean(v_seq1_One_H1),num_sim,1);
 v_seq1_One_H1 = double(v_seq1_One_H1>=mean_v_seq1_One_H1);
-mean_v_seq2_One_H1 = repmat(mean(v_seq2_One_H1),length(v_seq2_One_H1),1);
+mean_v_seq2_One_H1 = repmat(mean(v_seq2_One_H1),num_sim,1);
 v_seq2_One_H1 = double(v_seq2_One_H1>=mean_v_seq2_One_H1);
 
-mean_v1_One_H2 = repmat(mean(v1_One_H2),length(v1_One_H2),1);
+mean_v1_One_H2 = repmat(mean(v1_One_H2),num_sim,1);
 v1_One_H2 = double(v1_One_H2>=mean_v1_One_H2);
-mean_v2_One_H2 = repmat(mean(v2_One_H2),length(v2_One_H2),1);
+mean_v2_One_H2 = repmat(mean(v2_One_H2),num_sim,1);
 v2_One_H2 = double(v2_One_H2>=mean_v2_One_H2);
 
-mean_v_seq1_One_H2 = repmat(mean(v_seq1_One_H2),length(v_seq1_One_H2),1);
+mean_v_seq1_One_H2 = repmat(mean(v_seq1_One_H2),num_sim,1);
 v_seq1_One_H2 = double(v_seq1_One_H2>=mean_v_seq1_One_H2);
-mean_v_seq2_One_H2 = repmat(mean(v_seq2_One_H2),length(v_seq2_One_H2),1);
+mean_v_seq2_One_H2 = repmat(mean(v_seq2_One_H2),num_sim,1);
 v_seq2_One_H2 = double(v_seq2_One_H2>=mean_v_seq2_One_H2);
 
-mean_v1_One_H12 = repmat(mean(v1_One_H12),length(v1_One_H12),1);
+mean_v1_One_H12 = repmat(mean(v1_One_H12),num_sim,1);
 v1_One_H12 = double(v1_One_H12>=mean_v1_One_H12);
-mean_v2_One_H12 = repmat(mean(v2_One_H12),length(v2_One_H12),1);
+mean_v2_One_H12 = repmat(mean(v2_One_H12),num_sim,1);
 v2_One_H12 = double(v2_One_H12>=mean_v2_One_H12);
 
-mean_v_seq1_One_H12 = repmat(mean(v_seq1_One_H12),length(v_seq1_One_H12),1);
+mean_v_seq1_One_H12 = repmat(mean(v_seq1_One_H12),num_sim,1);
 v_seq1_One_H12 = double(v_seq1_One_H12>=mean_v_seq1_One_H12);
-mean_v_seq2_One_H12 = repmat(mean(v_seq2_One_H12),length(v_seq2_One_H12),1);
+mean_v_seq2_One_H12 = repmat(mean(v_seq2_One_H12),num_sim,1);
 v_seq2_One_H12 = double(v_seq2_One_H12>=mean_v_seq2_One_H12);
+
+
+mean_H1_One = repmat(mean(H1_One),num_sim,1);
+H1_One = double(H1_One>=mean_H1_One);
+mean_H2_One = repmat(mean(H2_One),num_sim,1);
+H2_One = double(H2_One>=mean_H2_One);
+mean_H_12_One = repmat(mean(H_12_One),num_sim,1);
+H_12_One = double(H_12_One>=mean_H_12_One);
 
 %%%%%%%%%%%%信道直接计算密钥的方法(只掌握一条信道)%%%%%%%%%%%%%%%%
 MI_Channel_H1 = zeros(channelStrength_Size,1);
@@ -193,6 +201,13 @@ end
 
 step = 1:channelStrength_Size;
 
+for i = 0:channelStrength_Size-1
+    step(i+1) =  i/(channelStrength_Size-1);
+end
+
+step = step(1:channelStrength_Size);
+
+
 figure(1)
 plot(step,MI_Design_H1,'c-d','LineWidth',1.5);
 hold on;
@@ -203,8 +218,8 @@ hold on;
 plot(step,MI_Channel_H1_Attacker,'r-o','LineWidth',1.5);
 hold off;
 grid on;
-axis([1 channelStrength_Size 0 1])
-%legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
+axis([0 1 0 1])
+legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
 legend('Design Key','Channel Key','Design Leak','Channel Leak','Fontname','<宋体>');
 xlabel('控制信道强度','Fontname','<宋体>');
 ylabel('互信息','Fontname','<宋体>');
@@ -219,8 +234,8 @@ hold on;
 plot(step,MI_Channel_H2_Attacker,'r-o','LineWidth',1.5);
 hold off;
 grid on;
-axis([1 channelStrength_Size 0 1])
-%legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
+axis([0 1 0 1])
+legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
 legend('Design Key','Channel Key','Design Leak','Channel Leak','Fontname','<宋体>');
 xlabel('控制信道强度','Fontname','<宋体>');
 ylabel('互信息','Fontname','<宋体>');
@@ -237,12 +252,12 @@ hold on;
 plot(step,MI_Channel_H_12_Attacker,'r-o','LineWidth',1.5);
 hold off;
 grid on;
-axis([1 channelStrength_Size 0 1])
-%legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
+axis([0 1 0 1])
+legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
 legend('Design Key','Channel Key','Design Leak','Channel Leak','Fontname','<宋体>');
 xlabel('控制信道强度','Fontname','<宋体>');
 ylabel('互信息','Fontname','<宋体>');
-% 
+
 save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_One.txt', 'MI_Channel_One','-ascii');
 save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Design_One.txt', 'MI_Design_One', '-ascii');
 save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\CCA\MI_Channel_masterOneChannel.txt', 'MI_Channel_masterOneChannel','-ascii');
