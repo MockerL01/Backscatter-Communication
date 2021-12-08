@@ -20,8 +20,8 @@ hm2 = hm1;
 
 
 % all transmissions in ambient backscatter communication
-[y1_d,~] = ofdm_trans(data_ofdm_RF, h, pw_noise.*d(3));
-[y1_d_t,~] = ofdm_trans(data_ofdm_RF, h_t, pw_noise.*d(3));
+y1_d = ofdm_trans(data_ofdm_RF, h, pw_noise.*d(3));
+y1_d_t = ofdm_trans(data_ofdm_RF, h_t, pw_noise.*d(3));
 [inject_hm1,~] = ofdm_trans(data_ofdm_Mallory,hm1,0);
 [inject_hm2,~] = ofdm_trans(data_ofdm_Mallory,hm2,0);
 

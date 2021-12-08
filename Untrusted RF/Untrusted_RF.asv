@@ -15,11 +15,9 @@ n_ofdm = n_fft + n_cp;
 n_frame = 1;   
 K = 1;
 c_flag = 1;
-num_size = 50000;
+num_size = 5000;
 
-maxSignalStrength = 11;
-
-signalStrength = 0;
+maxSignalStrength = 20;
 
 v1 = zeros(num_size,maxSignalStrength);
 v2 = zeros(num_size,maxSignalStrength);
@@ -34,14 +32,13 @@ MI_Design_Key = zeros(maxSignalStrength,1);
 leakInfo_Channel = zeros(maxSignalStrength,1);
 leakInfo_Design = zeros(maxSignalStrength,1);
 
-for j = 1:maxSignalStrength
-    data_ofdm = ofdm_module_forgeRF(rand_ints, mod_method, n_fft, n_cp, 1,signalStrength);
+for signalStrength = 1:maxSignalStrength
+    data_ofdm = ofdm_module_forgeRF(rand_ints, mod_method, n_fft, n_cp, 1,signalStrength/);
     for i = 1:num_size
-        [v1(i,j),v2(i,j),seq1(i,j),seq2(i,j),h1(:,j),h2(:,j)] = generate_key_bit_forgeRF(data_ofdm, n_ofdm,n_cp ,n_frame);
-        leakInfoH1(i,j) = mean(abs(conv(data_ofdm,h1(:,j))));
-        leakInfoH2(i,j) = mean(abs(conv(data_ofdm,h2(:,j))));
+        [v1(i,signalStrength),v2(i,signalStrength),seq1(i,signalStrength),seq2(i,signalStrength),h1(:,signalStrength),h2(:,signalStrength)] = generate_key_bit_forgeRF(data_ofdm, n_ofdm,n_cp ,n_frame);
+        leakInfoH1(i,signalStrength) = mean(abs(conv(data_ofdm,h1(:,signalStrength))));
+        leakInfoH2(i,signalStrength) = mean(abs(conv(data_ofdm,h2(:,signalStrength))));
     end
-    signalStrength = signalStrength+1;
 end
 
 
@@ -80,12 +77,12 @@ for j = 1:maxSignalStrength
     
     leakInfo_Design(j) = max(leakInfo_Design_H1,leakInfo_Design_H2);
 end
-
-save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\Forge RF\MI_Channel_Key.txt', 'MI_Channel_Key','-ascii');
-save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\Forge RF\MI_Design_Key.txt', 'MI_Design_Key','-ascii');
-save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\Forge RF\leakInfo_Channel.txt', 'leakInfo_Channel','-ascii');
-save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\Forge RF\leakInfo_Design.txt', 'leakInfo_Design','-ascii');
-step = 0:1:maxSignalStrength-1;
+% 
+% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\Forge RF\MI_Channel_Key.txt', 'MI_Channel_Key','-ascii');
+% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\Forge RF\MI_Design_Key.txt', 'MI_Design_Key','-ascii');
+% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\Forge RF\leakInfo_Channel.txt', 'leakInfo_Channel','-ascii');
+% save ('E:\研究生\背反射项目\physical-key-generation-master\mySim\result\Forge RF\leakInfo_Design.txt', 'leakInfo_Design','-ascii');
+step = 1:1:maxSignalStrength;
 
 plot(step,MI_Design_Key,'b-o','LineWidth',1.5);
 hold on;
@@ -95,7 +92,7 @@ hold on;
 plot(step,leakInfo_Channel,'r-d','LineWidth',1.5);
 hold off;
 grid on;
-axis([0 maxSignalStrength-1 0 1])
+axis([1 50 0 1])
 
 legend('收发设计的密钥互信息','信道分析的密钥互信息','收发设计的信息泄露比率','信道分析的信息泄露比率','Fontname','<宋体>');
 xlabel('强度','Fontname','<宋体>');

@@ -1,20 +1,27 @@
 function  [v_y1_cp, v_y2_cp, v_key1, v_key2,leakInf_hm1,leakInf_hm2] = generate_key_bit_SIA(data_ofdm_RF,data_ofdm_Mallory,n_ofdm, n_cp ,n_frame)
 
 pt = 10^(-2);
-snr = 15;
+snr = 10;
 alpha = 0.3 + 1i*0.4;
-pw_noise = pt/10^(snr/10);
-% pw_noise = 0;
+% pw_noise = pt/10^(snr/10);
+
+pw_noise = 0.25;
 
 
 
 d = [8, 7, 3, 2];
 taps = [8, 7, 3, 2];
 n_L = max(taps(1),taps(2))+taps(3)-1;  %×î³¤Ê±ÑÓ
+cor = 0.99;
 
 h1 = ray_model(d(1),taps(1));
+% h1_t = ray_model_cor(h1,cor,d(1));
 h2 = ray_model(d(2),taps(2));
+% h2_t = ray_model_cor(h2,cor,d(2));
+
 h_12 = ray_model(d(3),taps(3));
+% h_21 = ray_model_cor(h_12,cor,d(2));
+
 hm1 = ray_model(d(4),taps(4));
 hm2 = hm1;
 
@@ -24,6 +31,7 @@ hm2 = hm1;
 % all transmissions in ambient backscatter communication
 [y1_d_h1_design,noise_h1] = ofdm_trans(data_ofdm_RF,h1,pw_noise);
 [y1_d_hm1_design,noise_hm1] = ofdm_trans(data_ofdm_Mallory,hm1,pw_noise);
+
 y1_d_design = combineSignal( y1_d_h1_design , y1_d_hm1_design);
 back1_design = ofdm_back(y1_d_design,alpha,n_ofdm,n_frame);
 

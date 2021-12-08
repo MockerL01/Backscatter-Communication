@@ -1,3 +1,6 @@
+clc
+clear
+
 addpath('E:\研究生\背反射项目\physical-key-generation-master\MIToolbox-master\matlab');
 
 % modulation methods: BPSK, QPSK,16QAM, 32QAM,64QAM
@@ -20,10 +23,15 @@ c_flag = 1;
 % save data_input.txt -ascii rand_ints_gen
 rand_ints = load("data_input_256.txt");
 data_ofdm = ofdm_module(rand_ints, mod_method, n_fft, n_cp, c_flag);
-num_sim = 10000;
-channelStrength_Size = 11;
-ChannelStrength = 0;
-channelStrengthStride = 0.1;
+num_sim = 50000;
+channelStrength_Size = 21;
+ChannelStrength_h1  = 0;
+ChannelStrength_h2  = 0;
+ChannelStrength_h12  = 0;
+channelStrengthStride_h1 = 8/20;
+channelStrengthStride_h2 = 7/20;
+channelStrengthStride_h12 = 3/20;
+
 
 MI_Channel_masterTwoChannel = zeros(channelStrength_Size,1);
 MI_Design_masterTwoChannel = zeros(channelStrength_Size,1);
@@ -38,13 +46,15 @@ H1_Two_1 = zeros(num_sim,channelStrength_Size);H1_Two_2 = zeros(num_sim,channelS
 H2_Two_1 = zeros(num_sim,channelStrength_Size);H12_Two_2 = zeros(num_sim,channelStrength_Size);H_12_Two_3 = zeros(num_sim,channelStrength_Size);
 for j = 1:channelStrength_Size
     for i = 1:num_sim
-        [v1_Two_1(i,j), v2_Two_1(i,j), v_seq1_Two_1(i,j), v_seq2_Two_1(i,j),H1_Two_1(i,j),H2_Two_1(i,j),~] = generate_key_bit_CCA(data_ofdm,n_ofdm, n_cp , n_frame,ChannelStrength,1,1,0);
-        [v1_Two_2(i,j), v2_Two_2(i,j), v_seq1_Two_2(i,j), v_seq2_Two_2(i,j),H1_Two_2(i,j),~,H12_Two_2(i,j)] = generate_key_bit_CCA(data_ofdm,n_ofdm, n_cp , n_frame,ChannelStrength,1,0,1);
-        [v1_Two_3(i,j), v2_Two_3(i,j), v_seq1_Two_3(i,j), v_seq2_Two_3(i,j),~,H2_Two_3(i,j),H_12_Two_3(i,j)] = generate_key_bit_CCA(data_ofdm,n_ofdm, n_cp , n_frame,ChannelStrength,0,1,1);
+        [v1_Two_1(i,j), v2_Two_1(i,j), v_seq1_Two_1(i,j), v_seq2_Two_1(i,j),H1_Two_1(i,j),H2_Two_1(i,j),~] = generate_key_bit_CCA(data_ofdm,n_ofdm, n_cp , n_frame,1,ChannelStrength_h1,ChannelStrength_h2,0);
+        [v1_Two_2(i,j), v2_Two_2(i,j), v_seq1_Two_2(i,j), v_seq2_Two_2(i,j),H1_Two_2(i,j),~,H12_Two_2(i,j)] = generate_key_bit_CCA(data_ofdm,n_ofdm, n_cp , n_frame,1,ChannelStrength_h1,0,ChannelStrength_h12);
+        [v1_Two_3(i,j), v2_Two_3(i,j), v_seq1_Two_3(i,j), v_seq2_Two_3(i,j),~,H2_Two_3(i,j),H_12_Two_3(i,j)] = generate_key_bit_CCA(data_ofdm,n_ofdm, n_cp , n_frame,1,0,ChannelStrength_h2,ChannelStrength_h12);
     end
-     ChannelStrength = ChannelStrength + channelStrengthStride ;
+     ChannelStrength_h1 = ChannelStrength_h1 + channelStrengthStride_h1 ;
+     ChannelStrength_h2 = ChannelStrength_h2 + channelStrengthStride_h2 ;
+     ChannelStrength_h12 = ChannelStrength_h12 + channelStrengthStride_h12 ;
 end
-
+% 
 mean_H1_Two_1 = repmat(mean(H1_Two_1),num_sim,1);
 H1_Two_1 = double(H1_Two_1>=mean_H1_Two_1);
 mean_H2_Two_1 = repmat(mean(H2_Two_1),num_sim,1);
@@ -197,37 +207,39 @@ end
 
 % clear Diff_Design_H1H2;clear Diff_Design_H2H_12;clear Diff_Design_H1H_12;
 
-for i = 0:channelStrength_Size-1
-    step(i+1) =  i/(channelStrength_Size-1);
-end
+
+
+step1 = 0:channelStrengthStride_h1:8;
+step2 = 0:channelStrengthStride_h2:7;
+
 
 figure(1);
-plot(step,MI_Design_H1H2,'c-d','LineWidth',1.5);
+plot(step1,MI_Design_H1H2,'c-d','LineWidth',1.5);
 hold on;
-plot(step,MI_Channel_H1H2,'r-o','LineWidth',1.5);
+plot(step1,MI_Channel_H1H2,'r-o','LineWidth',1.5);
 hold on;
-plot(step,MI_Design_H1H2_Attacker,'k-d','LineWidth',1.5);
+plot(step1,MI_Design_H1H2_Attacker,'k-d','LineWidth',1.5);
 hold on;
-plot(step,MI_Channel_H1H2_Attacker,'r-o','LineWidth',1.5);
+plot(step1,MI_Channel_H1H2_Attacker,'r-o','LineWidth',1.5);
 hold off;
 grid on;
-axis([0 1 0 1])
+axis([0 8 0 1])
 %legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
 legend('Design Key','Channel Key','Design Leak','Channel Leak','Fontname','<宋体>');
 xlabel('控制信道强度','Fontname','<宋体>');
 ylabel('互信息','Fontname','<宋体>');
 
 figure(2);
-plot(step,MI_Design_H1H_12,'c-d','LineWidth',1.5);
+plot(step1,MI_Design_H1H_12,'c-d','LineWidth',1.5);
 hold on;
-plot(step,MI_Channel_H1H_12,'r-o','LineWidth',1.5);
+plot(step1,MI_Channel_H1H_12,'r-o','LineWidth',1.5);
 hold on;
-plot(step,MI_Design_H1H_12_Attacker,'k-d','LineWidth',1.5);
+plot(step1,MI_Design_H1H_12_Attacker,'k-d','LineWidth',1.5);
 hold on;
-plot(step,MI_Channel_H1H_12_Attacker,'r-o','LineWidth',1.5);
+plot(step1,MI_Channel_H1H_12_Attacker,'r-o','LineWidth',1.5);
 hold off;
 grid on;
-axis([0 1 0 1])
+axis([0 8 0 1])
 %legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
 legend('Design Key','Channel Key','Design Leak','Channel Leak','Fontname','<宋体>');
 xlabel('控制信道强度','Fontname','<宋体>');
@@ -236,16 +248,16 @@ ylabel('互信息','Fontname','<宋体>');
 
 figure(3);
 
-plot(step,MI_Design_H2H_12,'c-d','LineWidth',1.5);
+plot(step2,MI_Design_H2H_12,'c-d','LineWidth',1.5);
 hold on;
-plot(step,MI_Channel_H2H_12,'r-o','LineWidth',1.5);
+plot(step2,MI_Channel_H2H_12,'r-o','LineWidth',1.5);
 hold on;
-plot(step,MI_Design_H2H_12_Attacker,'k-d','LineWidth',1.5);
+plot(step2,MI_Design_H2H_12_Attacker,'k-d','LineWidth',1.5);
 hold on;
-plot(step,MI_Channel_H2H_12_Attacker,'r-o','LineWidth',1.5);
+plot(step2,MI_Channel_H2H_12_Attacker,'r-o','LineWidth',1.5);
 hold off;
 grid on;
-axis([0 1 0 1])
+axis([0 7 0 1])
 %legend('cor = 0, V|Ve^1','cor = 0, V|Ve^2','cor = 0, V_h|Ve','cor = 0.6, V|Ve^1','cor = 0.6, V|Ve^2','cor = 0.6, V_h|Ve');
 legend('Design Key','Channel Key','Design Leak','Channel Leak','Fontname','<宋体>');
 xlabel('控制信道强度','Fontname','<宋体>');

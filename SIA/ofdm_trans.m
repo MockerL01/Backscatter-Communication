@@ -7,7 +7,8 @@ function [channel_data,noise] = ofdm_trans(ofdm_data, h, noise_pw)
 %       channel data: the received data at receiver, including data signal and
 %       noise signal
 
-channel_data = conv(ofdm_data,h);%多项式相乘
-noise = normrnd(0,sqrt(noise_pw),size(channel_data))+normrnd(0,sqrt(noise_pw),size(channel_data))*1i;
+channel_data = conv(ofdm_data,h);
 
+
+noise = normrnd(0,sqrt(noise_pw),size(channel_data))+normrnd(0,sqrt(noise_pw),size(channel_data))*1i;
 channel_data = channel_data+noise;

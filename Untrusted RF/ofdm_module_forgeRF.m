@@ -101,7 +101,9 @@ end
 % cp_flag
 % x_cp
 ofdm_data = x_cp(:);
-ofdm_data = ofdm_data/sqrt(mean(abs(ofdm_data).^2))*signalStrength;
+ofdm_data = ofdm_data/sqrt(mean(abs(ofdm_data).^2)).*(signalStrength+1);
+
+% avg_pow = mean(abs(ofdm_data).^2)
 
 
 

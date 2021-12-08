@@ -10,8 +10,7 @@ figure(1);
 
 plot(step,MI_Design_Key,'g-s','LineWidth',1.5);
 hold on;
-plot(step,MI_Channel_Key,'r-o','LineWidth',1.5);
-hold on;
+plot(step,MI_Channel_Key,'r-o','LineWidth',1.5);hold on;
 plot(step,leakInfo_Design,'g--d','LineWidth',1.5);
 hold on;
 plot(step,leakInfo_Channel,'r-v','LineWidth',1.5);
